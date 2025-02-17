@@ -1,10 +1,11 @@
 import { SearchBar } from "./components/searchbar";
+import FilterSection from "./sections/noticefilter";
 
 export default function NoticeList(){
     return (
         <div className="flex">
             {/* Navbar */}
-            <div className="absolute w-full h-14 text-white bg-blue-500 flex px-4 justify-between">
+            <div className="absolute w-full h-14 text-white bg-blue-500 flex px-4 justify-between place-items-center">
                 <p className="font-bold">
                     Acompanhamento de editais
                 </p>
@@ -21,19 +22,19 @@ export default function NoticeList(){
                     <SearchBar/>
                 </div>
 
-                <div className="flex flex-1">
+                <div className="flex flex-1 ml-12">
                     {/* Listagem dos editais */}
-                    <div className="overflow-y-auto flex items-center flex-col gap-3 bg-blue-200 w-3/4 h-[500px] py-4">
+                    <div className="overflow-y-auto flex items-center flex-col gap-3 bg-slate-200 rounded-lg w-3/4 h-[500px] py-4">
                         {Array.from({ length: 15 }, (_, i) => (
-                            <div key={i} className="bg-red-400 w-11/12 h-12">
-                                <p>edital</p>
+                            <div key={i} className="bg-purple-400 w-11/12 h-12">
+                                <p>Edital</p>
                             </div>
                         ))}
                     </div>
 
                     {/* Opções de filtro */}
-                    <div className="bg-yellow-200 w-1/4">
-                        <span>Filtro</span>
+                    <div className="w-1/4">
+                        <FilterSection/>
                     </div>
                 </div>
                 

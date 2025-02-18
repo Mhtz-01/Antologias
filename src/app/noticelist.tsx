@@ -1,4 +1,4 @@
-import { SearchBar } from "./components/searchbar";
+import { SearchBar } from "../components/searchbar";
 import FilterSection from "./sections/noticefilter";
 
 export default function NoticeList(){

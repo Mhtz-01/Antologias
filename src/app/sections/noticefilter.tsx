@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import FilterButton from "../components/filter/filterbutton";
-import FilterField from "../components/filter/filterfield";
+import FilterButton from "../../components/filter/filterbutton";
+import FilterField from "../../components/filter/filterfield";
 
 interface SelectedFilters {
     area: string[];

@@ -3,7 +3,8 @@ import FilterSection from "./sections/noticefilter";
 
 export default function NoticeList(){
     return (
-        <div className="flex">
+        <div className="flex flex-col">
+            <div className="h-screen">
             {/* Navbar */}
             <div className="absolute w-full h-14 text-white bg-blue-500 flex px-4 justify-between place-items-center">
                 <p className="font-bold">
@@ -39,11 +40,15 @@ export default function NoticeList(){
                 </div>
                 
                 
+            </div >
             </div>
-            {/* footer */}
-            <div>
-
+            
+        
+            <div className="w-full h-14 text-white bg-blue-500 flex px-4 place-items-center justify-center">
+                        <span>CIn-BoraImpactar</span>
             </div>
         </div>
+
+        
     )
 }

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { sql } from '@vercel/postgres';
+import { Client } from 'pg';
 import { z } from 'zod';
 
 const EditalSchema = z.object({
@@ -8,65 +8,70 @@ const EditalSchema = z.object({
   funding_min: z.number().positive(),
   funding_max: z.number().positive(),
   sponsor: z.object({ name: z.string().min(3) }),
-  sdgs: z.array(z.number().int().positive()),
-  causes: z.array(z.number().int().positive()),
-  skills: z.array(z.number().int().positive())
+  sdgs: z.array(z.number().int().positive()).nonempty(),
+  causes: z.array(z.number().int().positive()).nonempty(),
+  skills: z.array(z.number().int().positive()).nonempty()
 });
 
-// GET Todos os Editais
+const client = new Client({
+  connectionString: process.env.POSTGRES_URL
+})
+
+await client.connect();
+
+// GET - Buscar todos os editais
 export async function GET() {
   try {
-    const editais = await sql`
+    const editais = await client.query(` 
       SELECT 
         e.id,
         e.title,
         e.description,
         e.funding_min,
         e.funding_max,
-        s.name as sponsor_name,
+        s.name AS sponsor_name,
         (
           SELECT array_agg(sdg) 
           FROM edital_sdgs 
           WHERE edital_id = e.id
-        ) as sdgs,
+        ) AS sdgs,
         (
           SELECT array_agg(cause) 
           FROM edital_causes 
           WHERE edital_id = e.id
-        ) as causes,
+        ) AS causes,
         (
           SELECT array_agg(skill) 
           FROM edital_skills 
           WHERE edital_id = e.id
-        ) as skills
+        ) AS skills
       FROM editais e
       JOIN sponsors s ON e.sponsor_id = s.id
-    `;
+    `);
 
     return NextResponse.json(editais.rows);
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Erro ao buscar editais' },
-      { status: 500 }
-    );
+    console.error('Erro ao buscar editais:', error);
+    return NextResponse.json({ error: 'Erro ao buscar editais' }, { status: 500 });
   }
 }
 
-// POST Criar Novo Edital
+// POST - Criar novo edital
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const validatedData = EditalSchema.parse(body);
 
-    // Insere Patrocinador
-    const sponsor = await sql`
+    // Insere ou busca patrocinador existente
+    const sponsor = await client.query(`
       INSERT INTO sponsors (name)
       VALUES (${validatedData.sponsor.name})
+      ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
       RETURNING id
-    `;
+    `);
 
-    // Insere Edital
-    const edital = await sql`
+    // Insere edital
+    const edital = await client.query(`
       INSERT INTO editais (
         title, 
         description, 
@@ -79,25 +84,35 @@ export async function POST(request: Request) {
         ${validatedData.funding_min},
         ${validatedData.funding_max},
         ${sponsor.rows[0].id}
-      ) RETURNING *
-    `;
+      ) RETURNING id
+    `);
 
-    // Insere Relacionamentos
     const editalId = edital.rows[0].id;
 
+    // Insere relacionamentos (SDGs, Causas, Skills)
+    const insertRelations = async (table: string, field: string, values: number[]) => {
+      if (values.length > 0) {
+        console.log(`
+          INSERT INTO ${table} (edital_id, ${field})
+      VALUES ${values.map((_, index) => `($${1}, $${index + 2})`).join(',')}`,
+    values)
+
+        await client.query( `
+          INSERT INTO ${table} (edital_id, ${field})
+      VALUES ${values.map((_, index) => `($${1}, $${index + 2})`).join(',')}`,
+      values);
+      }
+    };
+
     await Promise.all([
-      sql`INSERT INTO edital_sdgs ${sql(validatedData.sdgs.map(sdg => ({ edital_id: editalId, sdg })))}`,
-      sql`INSERT INTO edital_causes ${sql(validatedData.causes.map(cause => ({ edital_id: editalId, cause })))}`,
-      sql`INSERT INTO edital_skills ${sql(validatedData.skills.map(skill => ({ edital_id: editalId, skill }))}`
+      insertRelations('edital_sdgs', 'sdg', validatedData.sdgs),
+      insertRelations('edital_causes', 'cause', validatedData.causes),
+      insertRelations('edital_skills', 'skill', validatedData.skills)
     ]);
 
-    return NextResponse.json(edital.rows[0], { status: 201 });
-
+    return NextResponse.json({ id: editalId, message: 'Edital criado com sucesso' }, { status: 201 });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: 'Dados inválidos ou erro no servidor' },
-      { status: 400 }
-    );
+    console.error('Erro ao criar edital:', error);
+    return NextResponse.json({ error: 'Dados inválidos ou erro no servidor' }, { status: 400 });
   }
 }

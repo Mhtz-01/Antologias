@@ -41,7 +41,7 @@ export default function FilterSection() {
     };
 
     return (
-        <div className="flex flex-col place-items-center text-slate-950 my-3 gap-2 overflow-y-auto">
+        <div className="flex flex-col place-items-center text-slate-900 my-3 gap-2 overflow-y-auto">
             <span>Filtre sua busca por aqui</span>
             <FilterField label="Área de Interesse" options={area} selectedFilters={selectedFilters.area} setSelectedFilters={(filters) => setSelectedFilters(prev => ({ ...prev, area: filters }))} />
             <FilterField label="ODS" options={ods} selectedFilters={selectedFilters.ods} setSelectedFilters={(filters) => setSelectedFilters(prev => ({ ...prev, ods: filters }))} />

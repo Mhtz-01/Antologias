@@ -6,6 +6,7 @@ import { Sponsor } from "./sponsor";
 export default class Edital {
     public id: number
     public title: string
+    public icon: string
     public description: string
     public funding_min: number;
     public funding_max: number;
@@ -17,6 +18,7 @@ export default class Edital {
     constructor(
         id: number,
         title: string,
+        icon: string,
         description: string,
         funding_min: number,
         funding_max: number,
@@ -27,6 +29,7 @@ export default class Edital {
     ) {
         this.id = id;
         this.title = title;
+        this.icon = icon;
         this.description = description;
         this.funding_min = funding_min;
         this.funding_max = funding_max;

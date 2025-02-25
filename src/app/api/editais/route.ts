@@ -7,6 +7,7 @@ const EditalSchema = z.object({
   description: z.string().min(10),
   funding_min: z.number().positive(),
   funding_max: z.number().positive(),
+  IconUrl: z.string(),
   sponsor: z.object({ name: z.string().min(3) }),
   sdgs: z.array(z.number().int().positive()).nonempty(),
   causes: z.array(z.number().int().positive()).nonempty(),
@@ -29,7 +30,8 @@ export async function GET() {
         e.description,
         e.funding_min,
         e.funding_max,
-        s.name AS sponsor_name,
+        e.IconUrl,
+        s.name AS sponsor,
         (
           SELECT array_agg(sdg) 
           FROM edital_sdgs 
@@ -63,12 +65,12 @@ export async function POST(request: Request) {
     const validatedData = EditalSchema.parse(body);
 
     // Insere ou busca patrocinador existente
-    const sponsor = await client.query(`
-      INSERT INTO sponsors (name)
-      VALUES (${validatedData.sponsor.name})
+    const sponsor = await client.query(
+     `INSERT INTO sponsors (name)
+      VALUES ($1)
       ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
-      RETURNING id
-    `);
+      RETURNING id`,
+    [validatedData.sponsor.name]);
 
     // Insere edital
     const edital = await client.query(`
@@ -76,16 +78,12 @@ export async function POST(request: Request) {
         title, 
         description, 
         funding_min, 
-        funding_max, 
+        funding_max,
+        IconUrl, 
         sponsor_id
-      ) VALUES (
-        ${validatedData.title},
-        ${validatedData.description},
-        ${validatedData.funding_min},
-        ${validatedData.funding_max},
-        ${sponsor.rows[0].id}
-      ) RETURNING id
-    `);
+      ) VALUES ( $1, $2, $3, $4, $5, $6) 
+       RETURNING id
+    `,[validatedData.title, validatedData.description, validatedData.funding_min, validatedData.funding_max, validatedData.IconUrl, sponsor.rows[0].id]);
 
     const editalId = edital.rows[0].id;
 

@@ -92,12 +92,12 @@ export async function POST(request: Request) {
       if (values.length > 0) {
         console.log(`
           INSERT INTO ${table} (edital_id, ${field})
-      VALUES ${values.map((_, index) => `($${1}, $${index + 2})`).join(',')}`,
+      VALUES ${values.map((_, index) => `(${editalId}, $${index + 1})`).join(',')}`,
     values)
 
         await client.query( `
           INSERT INTO ${table} (edital_id, ${field})
-      VALUES ${values.map((_, index) => `($${1}, $${index + 2})`).join(',')}`,
+      VALUES ${values.map((_, index) => `(${editalId}, $${index + 1})`).join(',')}`,
       values);
       }
     };

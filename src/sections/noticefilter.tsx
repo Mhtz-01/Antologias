@@ -8,18 +8,21 @@ interface SelectedFilters {
     area: string[];
     ods: string[];
     region: string[];
+    skills: string[];
 }
 
 export default function FilterSection() {
     const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
         area: [],
         ods: [],
-        region: []
+        region: [],
+        skills: []
     });
 
     const area = ["Sustentabilidade", "Artes e Cultura", "Educação", "Tecnologia", "Diversidade"];
-    const ods = ["ODS1"];
+    const ods = [ "ODS1", "ODS2", "ODS3", "ODS4", "ODS5" ]
     const region = ["Municipal", "Estadual", "Federal", "Internacional"];
+    const skills = ["Artes", "Dança", "Artesanato", "Tecnologia", "Saúde", "Cozinha"]
 
     // Enviar filtros ao backend
     const applyFilters = async () => {
@@ -43,8 +46,9 @@ export default function FilterSection() {
     return (
         <div className="flex flex-col place-items-center text-slate-900 my-3 gap-2 overflow-y-auto">
             <span>Filtre sua busca por aqui</span>
-            <FilterField label="Área de Interesse" options={area} selectedFilters={selectedFilters.area} setSelectedFilters={(filters) => setSelectedFilters(prev => ({ ...prev, area: filters }))} />
+            <FilterField label="Causas de interesse" options={area} selectedFilters={selectedFilters.area} setSelectedFilters={(filters) => setSelectedFilters(prev => ({ ...prev, area: filters }))} />
             <FilterField label="ODS" options={ods} selectedFilters={selectedFilters.ods} setSelectedFilters={(filters) => setSelectedFilters(prev => ({ ...prev, ods: filters }))} />
+            <FilterField label="Habilidades requisitadas" options={skills} selectedFilters={selectedFilters.skills} setSelectedFilters={(filters) => setSelectedFilters(prev => ({ ...prev, skills: filters }))} />
             <FilterField label="Região" options={region} selectedFilters={selectedFilters.region} setSelectedFilters={(filters) => setSelectedFilters(prev => ({ ...prev, region: filters }))} />
 
             <FilterButton onClick={applyFilters} />

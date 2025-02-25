@@ -4,14 +4,13 @@ interface EditalProps {
     title: string;
     description: string;
     icon: string;
+    sponsor: string;
 }
 
-const EditalCard: React.FC<EditalProps> = ({ title, description, icon}) => {
+const EditalCard: React.FC<EditalProps> = ({ title, description, icon, sponsor }) => {
     return (
         <div className="bg-white rounded-xl shadow-md flex flex-row text-slate-800 p-3 w-11/12 hover:bg-slate-100 cursor-pointer gap-4">
-            <img alt={icon} src="https://i.postimg.cc/QMQgBLBs/Azul-2-2021.png" className='size-14'></img>
-            
-            <div className='w-px h-full bg-slate-500'></div>
+            <img alt={icon} src={icon} className='object-contain size-20'></img>
             
             <div className='flex flex-col'>
                 <span className='font-bold'>
@@ -20,7 +19,12 @@ const EditalCard: React.FC<EditalProps> = ({ title, description, icon}) => {
                 <span>
                     {description}    
                 </span>
+                <span>
+                    {sponsor}
+                </span>
             </div>
+
+            <div className='w-px h-full bg-slate-300'></div>
                   
         </div>
     );

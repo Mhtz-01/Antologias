@@ -10,12 +10,25 @@ export default function NoticeList(){
     const fetchEditais = async () => {
         const res = await fetch("/api/editais");
         const data = await res.json();
-        setEditais(data);
-    }
+  
+        const transformedData = data.map((edital: any) => ({
+            ...edital,
+            icon: edital.iconurl, 
+            sponsor: {
+                name: edital.sponsor, 
+            },
+        }));
+    
+        setEditais(transformedData);
+    };
 
     useEffect(() => {
         fetchEditais();
       }, []);
+
+    useEffect(() => {
+        console.log(editais)
+    }, [editais])
 
     return (
         <div className="flex flex-col">
@@ -47,20 +60,23 @@ export default function NoticeList(){
                 <div className="flex flex-1 ml-12">
                     {/* Listagem dos editais */}
                     <div className="overflow-y-auto flex items-center flex-col gap-3 bg-slate-200 rounded-lg w-3/4 h-[500px] py-4">
-                        {editais.map((edital) => (
-                            <EditalCard
+                    {editais.map((edital) => {
+
+                        return (
+                        <EditalCard
                             key={edital.id}
                             title={edital.title}
                             description={edital.description}
                             icon={edital.icon}
-                            />
-                        )
-
-                        )}
+                            sponsor={edital.sponsor.name}
+                        />
+                        );
+                    })
+                    }
                     </div>
 
                     {/* Opções de filtro */}
-                    <div className="w-1/4">
+                    <div className="w-1/4 text-slate-700 font-bold">
                         <FilterSection/>
                     </div>
                 </div>

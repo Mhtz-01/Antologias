@@ -4,7 +4,7 @@ import { Skill } from "../value-objects/skills";
 import { Sponsor } from "./sponsor";
 
 export default class Edital {
-    public id: number
+    public id: number | null
     public title: string
     public icon: string
     public description: string
@@ -16,7 +16,7 @@ export default class Edital {
     public skills: Skill[];
 
     constructor(
-        id: number,
+        id: number | null,
         title: string,
         icon: string,
         description: string,

@@ -3,32 +3,47 @@ import { SearchBar } from "../components/searchbar";
 import FilterSection from "../sections/noticefilter";
 import { useEffect, useState } from "react";
 import EditalCard from "@/components/editalcard";
+import LoginModal from "@/components/loginmodal";
 
 export default function NoticeList(){
     const [editais, setEditais] = useState<Edital[]>([])
+    const [isLoginOpen, setIsLoginOpen] = useState(false)
+
+    const toggleLogin = () => {
+        setIsLoginOpen(!isLoginOpen)
+    }
 
     const fetchEditais = async () => {
-        const res = await fetch("/api/editais");
-        const data = await res.json();
-  
-        const transformedData = data.map((edital: any) => ({
-            ...edital,
-            icon: edital.iconurl, 
-            sponsor: {
-                name: edital.sponsor, 
-            },
-        }));
-    
-        setEditais(transformedData);
+        try {
+            const res = await fetch("/api/editais");
+            if (!res.ok) throw new Error('Failed to fetch editais');
+            
+            const data = await res.json();
+            
+            const transformedData = data.map((edital: any) => ({
+                ...edital,
+                icon: edital.iconurl,
+                sponsor: {
+                    name: edital.sponsor,
+                
+                },
+       
+                sdgs: edital.sdgs,
+                causes: edital.causes,
+                skills: edital.skills
+            }));
+            
+            setEditais(transformedData);
+        } catch (error) {
+            console.error('Error fetching editais:', error);
+
+        }
     };
 
     useEffect(() => {
         fetchEditais();
       }, []);
 
-    useEffect(() => {
-        console.log(editais)
-    }, [editais])
 
     return (
         <div className="flex flex-col">
@@ -42,9 +57,11 @@ export default function NoticeList(){
                     Acompanhamento de editais
                 </span>
 
-                <button>
-                    Fazer login
+                <button onClick={toggleLogin}>
+                    Fazer login     
                 </button>
+
+                {isLoginOpen && <LoginModal/>}
 
             </div>
 

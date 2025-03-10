@@ -19,45 +19,6 @@ Um projeto realizado para a disciplina de Desenvolvimento de Software para ajuda
 
 ---
 
-## Como Rodar o Projeto Localmente
-
-### Pré-requisitos
-
-Antes de começar, certifique-se de ter instalado em sua máquina:
-- [Node.js](https://nodejs.org/)
-- [Yarn](https://yarnpkg.com/) ou npm
-- PostgreSQL configurado e rodando
-
-### Passos
-
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/seu-usuario/editais-cinbora.git
-   ```
-2. Acesse o diretório do projeto:
-   ```bash
-   cd editais-cinbora
-   ```
-3. Instale as dependências:
-   ```bash
-   yarn install
-   # ou
-   npm install
-   ```
-4. Configure as variáveis de ambiente no arquivo `.env` (exemplo de `.env.example` disponível no repositório).
-5. Execute as migrações do banco de dados:
-   ```bash
-   yarn prisma migrate dev
-   ```
-6. Inicie o servidor de desenvolvimento:
-   ```bash
-   yarn dev
-   ```
-
-O projeto estará disponível em `http://localhost:3000/`.
-
----
-
 ## Funcionalidades
 
 - **Listar editais disponíveis**

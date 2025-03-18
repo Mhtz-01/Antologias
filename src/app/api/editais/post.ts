@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import createEditalService from "@/domain/services/createEditalService";
+import createEditalService from "../../../domain/services/createEditalService";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json(); // Parse the request body
+    const body = await req.json(); 
     const { title, icon, description, funding_min, funding_max, sponsor, sdgs, causes, skills } = body;
 
     const edital = createEditalService.create({ title, icon, description, funding_min, funding_max, sponsor, sdgs, causes, skills });

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import RepositoryFactory from "@/domain/factories/RepositoryFactory";
+import RepositoryFactory from "../../../domain/factories/RepositoryFactory";
 
 export async function GET(req: NextRequest) {
   try {

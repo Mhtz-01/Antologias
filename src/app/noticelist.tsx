@@ -25,8 +25,9 @@ export default function NoticeList(){
                 icon: edital.iconurl,
                 sponsor: {
                     name: edital.sponsor,
-                
                 },
+                funding_min: edital.funding_min,
+                funding_max: edital.funding_max,
        
                 sdgs: edital.sdgs,
                 causes: edital.causes,
@@ -84,6 +85,11 @@ export default function NoticeList(){
                             key={edital.id}
                             title={edital.title}
                             description={edital.description}
+                            funding_min={edital.funding_min}
+                            funding_max={edital.funding_max}
+                            sdgs={edital.sdgs}
+                            skills={edital.skills}
+                            causes={edital.causes}
                             icon={edital.icon}
                             sponsor={edital.sponsor.name}
                         />

@@ -69,7 +69,7 @@ private async insertRelations(client: any, table: string, field: string, editalI
 async findAll(): Promise<Edital[]> {
     const query = `
     SELECT 
-        e.id, e.title, e.IconUrl, e.description, e.funding_min, e.funding_max,
+        e.id, e.title, e.IconUrl, e.description, e.funding_min, e.funding_max, e.initial_date_time, e.end_date_time,
         s.name AS sponsor,
         ARRAY(SELECT sdg FROM edital_sdgs WHERE edital_id = e.id) AS sdgs,
         ARRAY(SELECT cause FROM edital_causes WHERE edital_id = e.id) AS causes,

@@ -14,6 +14,8 @@ export default class Edital {
     public sdgs: SDG[];
     public causes: Cause[];
     public skills: Skill[];
+    public start_of_submission: string;
+    public end_of_submission: string;
 
     constructor(
         id: number | null,
@@ -25,7 +27,9 @@ export default class Edital {
         sponsor: Sponsor,
         sdgs: SDG[],
         causes: Cause[],
-        skills: Skill[]
+        skills: Skill[],
+        start_of_submission: string,
+        end_of_submission: string
     ) {
         this.id = id;
         this.title = title;
@@ -37,5 +41,7 @@ export default class Edital {
         this.sdgs = sdgs;
         this.causes = causes;
         this.skills = skills;
+        this.start_of_submission = start_of_submission;
+        this.end_of_submission = end_of_submission;
     }
 }

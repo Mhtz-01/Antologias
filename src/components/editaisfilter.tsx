@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import FilterButton from "../components/filter/filterbutton";
-import FilterField from "../components/filter/filterfield";
+import FilterButton from "./filter/filterbutton";
+import FilterField from "./filter/filterfield";
 
 interface SelectedFilters {
     area: string[];
@@ -20,7 +20,7 @@ export default function FilterSection() {
     });
 
     const area = ["Sustentabilidade", "Artes e Cultura", "Educação", "Tecnologia", "Diversidade"];
-    const ods = [ "ODS1", "ODS2", "ODS3", "ODS4", "ODS5" ]
+    const ods = ["ODS1", "ODS2", "ODS3", "ODS4", "ODS5"]
     const region = ["Municipal", "Estadual", "Federal", "Internacional"];
     const skills = ["Artes", "Dança", "Artesanato", "Tecnologia", "Saúde", "Cozinha"]
 

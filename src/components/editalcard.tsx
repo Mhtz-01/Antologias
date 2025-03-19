@@ -17,13 +17,13 @@ interface EditalProps {
     skills: Skill[];
 }
 
-const EditalCard: React.FC<EditalProps> = ({ 
-    title, description, icon, sponsor, funding_min, funding_max, sdgs, causes, skills 
+const EditalCard: React.FC<EditalProps> = ({
+    title, description, icon, sponsor, funding_min, funding_max, sdgs, causes, skills
 }) => {
     const [expanded, setExpanded] = useState(false);
 
     return (
-        <div 
+        <div
             className="bg-white rounded-xl shadow-md text-slate-800 p-3 w-11/12 cursor-pointer gap-4 transition-transform duration-200 hover:scale-105"
             onClick={() => setExpanded(!expanded)}
         >
@@ -40,7 +40,7 @@ const EditalCard: React.FC<EditalProps> = ({
             </div>
             <AnimatePresence>
                 {expanded && (
-                    <motion.div 
+                    <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -51,7 +51,7 @@ const EditalCard: React.FC<EditalProps> = ({
                         <p><strong>ODS:</strong> {sdgs.join(', ')}</p>
                         <p><strong>Causas:</strong> {causes.join(', ')}</p>
                         <p><strong>Habilidades:</strong> {skills.join(', ')}</p>
-                        <button 
+                        <button
                             className="mt-3 flex items-center text-blue-600 font-semibold hover:underline"
                         >
                             Ver mais detalhes <ArrowRight size={16} className="ml-1" />

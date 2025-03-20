@@ -28,20 +28,20 @@ export default function ContributePage() {
       });
 
       if (res.ok) {
-        setMessage("✅ Oportunidade enviada com sucesso!");
+        setMessage("Oportunidade enviada com sucesso!");
         setForm({ title: "", description: "", link: "", deadline: "", contact: "" });
       } else {
-        setMessage("❌ Erro ao enviar a oportunidade.");
+        setMessage("Erro ao enviar a oportunidade.");
       }
     } catch (error) {
-      setMessage("❌ Erro ao conectar com o servidor.");
+      setMessage("Erro ao conectar com o servidor.");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
       <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">💡 Enviar Oportunidade</h1>
+        <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">Enviar Oportunidade</h1>
 
         {message && (
           <p className="text-center text-lg font-semibold mb-4 text-green-600">{message}</p>
@@ -116,7 +116,7 @@ export default function ContributePage() {
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition duration-300"
           >
-            🚀 Enviar Oportunidade
+            Enviar Oportunidade
           </button>
         </form>
       </div>

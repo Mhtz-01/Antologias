@@ -1,103 +1,76 @@
-"use client"
+import Link from "next/link";
 
-import Edital from "@/domain/entities/edital";
-import { useEffect, useState } from "react";
-import EditalCard from "@/components/editalcard";
-import { SearchBar } from "@/components/searchbar";
-import FilterSection from "@/components/editaisfilter";
-
-export default function EditaisList() {
-    const [editais, setEditais] = useState<Edital[]>([])
-
-    const fetchEditais = async () => {
-        try {
-            const res = await fetch("/api/editais");
-            if (!res.ok) throw new Error('Failed to fetch editais');
-
-            const data = await res.json();
-
-            const transformedData = data.map((edital: any) => ({
-                ...edital,
-                icon: edital.iconurl,
-                sponsor: {
-                    name: edital.sponsor,
-                },
-                funding_min: edital.funding_min,
-                funding_max: edital.funding_max,
-                sdgs: edital.sdgs,
-                causes: edital.causes,
-                skills: edital.skills
-            }));
-
-            setEditais(transformedData);
-        } catch (error) {
-            console.error('Error fetching editais:', error);
-        }
-    };
-
-    useEffect(() => {
-        fetchEditais();
-    }, []);
-
-
+export default function HomePage() {
     return (
-        <div className="flex flex-col">
-            <div className="h-screen">
-                <div className="flex flex-col h-screen w-full flex-1">
-                    {/* Barra de pesquisa */}
-                    <div className="w-full h-1/4 justify-center items-center flex pt-12 gap-4">
-                        <img
-                            className="size-28 object-contain"
-                            src="https://i.postimg.cc/VkrcnwPx/bora-impactar.png"></img>
-                        <SearchBar />
-                    </div>
-                    <p className="text-slate-700 ml-12"
-                    >{editais.length} editais encontrados</p>
-                    <div className="flex flex-1 ml-12">
-                        {/* Listagem dos editais */}
-                        <div className="overflow-y-auto flex items-center flex-col gap-3 bg-slate-200 rounded-lg w-3/4 h-[500px] py-4">
-                            {editais.map((edital) => {
-
-                                return (
-                                    <EditalCard
-                                        key={edital.id}
-                                        title={edital.title}
-                                        description={edital.description}
-                                        funding_min={edital.funding_min}
-                                        funding_max={edital.funding_max}
-                                        sdgs={edital.sdgs}
-                                        skills={edital.skills}
-                                        causes={edital.causes}
-                                        icon={edital.icon}
-                                        sponsor={edital.sponsor.name}
-                                    />
-                                );
-                            })
-                            }
+        <div className="w-full">
+            {/* Seção Principal */}
+            <section 
+                className="relative h-screen flex flex-col justify-center items-center text-center text-white px-6"
+                style={{ backgroundImage: "url(/recife.webp)", backgroundSize: "cover", backgroundPosition: "center" }}
+            >
+                <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-md"></div>
+                <div className="relative z-10 flex flex-col items-center gap-4 max-w-3xl">
+                    <h1 className="text-5xl font-extrabold md:text-7xl">Conheça o Antologias</h1>
+                    <p className="text-lg md:text-xl">
+                        Um repositório de oportunidades de fomento para <strong>organizações do terceiro setor</strong>.
+                    </p>
+                    <div className="flex flex-col md:flex-row gap-6 mt-6">
+                        <div className="flex flex-col items-center gap-2">
+                            <p className="text-lg">Confira os editais disponíveis</p>
+                            <Link href="/editais">
+                                <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 transition-all text-white font-semibold rounded-lg">
+                                    Editais
+                                </button>
+                            </Link>
                         </div>
-
-
-                        {/* Opções de filtro */}
-                        <div className="w-1/4 text-slate-700 font-bold">
-                            <FilterSection />
+                        <span className="text-lg">ou</span>
+                        <div className="flex flex-col items-center gap-2">
+                            <p className="text-lg">Contribua indicando novas oportunidades!</p>
+                            <Link href="/contribuir">
+                                <button className="px-6 py-3 bg-green-600 hover:bg-green-700 transition-all text-white font-semibold rounded-lg">
+                                    Contribuir
+                                </button>
+                            </Link>
                         </div>
                     </div>
+                </div>
+            </section>
 
-
-                </div >
-            </div>
-
-
-            <div className="w-full h-14 text-white bg-pcr flex px-4 justify-start flex-1 gap-4 place-items-center">
-                <a href="https://portal.cin.ufpe.br/" target="blank">
-                    <img
-                        className="object-contain size-28"
-                        src="https://i.postimg.cc/W4d6s9r6/HMB.png"></img>
-                </a>
-                <span>Esse site é uma iniciativa do projeto CIn-Bora Impactar em parceria com a Prefeitura de Recife</span>
-            </div>
+            {/* Seção de Funcionalidades */}
+            <section className="h-auto py-20 px-6 bg-gray-100">
+                <div className="max-w-4xl mx-auto text-center">
+                    <h2 className="text-4xl font-bold text-gray-800">Funcionalidades</h2>
+                    <p className="text-lg text-gray-600 mt-4">
+                        O Antologias oferece diversas funcionalidades para facilitar o acesso a oportunidades de fomento.
+                    </p>
+                    <div className="grid md:grid-cols-2 gap-8 mt-10">
+                        <div className="p-6 bg-white rounded-lg shadow-md">
+                            <h3 className="text-2xl font-semibold text-blue-600">🔍 Filtragem e Pesquisa</h3>
+                            <p className="text-gray-700 mt-2">
+                                Pesquise e filtre editais por categoria, região, valor do financiamento e mais.
+                            </p>
+                        </div>
+                        <div className="p-6 bg-white rounded-lg shadow-md">
+                            <h3 className="text-2xl font-semibold text-blue-600">💾 Salvar Editais</h3>
+                            <p className="text-gray-700 mt-2">
+                                Salve editais de interesse para acessá-los posteriormente de forma rápida.
+                            </p>
+                        </div>
+                        <div className="p-6 bg-white rounded-lg shadow-md">
+                            <h3 className="text-2xl font-semibold text-blue-600">📬 Notificações Personalizadas</h3>
+                            <p className="text-gray-700 mt-2">
+                                Receba notificações sobre novos editais alinhados ao seu perfil de atuação.
+                            </p>
+                        </div>
+                        <div className="p-6 bg-white rounded-lg shadow-md">
+                            <h3 className="text-2xl font-semibold text-blue-600">🤝 Comunidade</h3>
+                            <p className="text-gray-700 mt-2">
+                                Compartilhe oportunidades e colabore com outras organizações do terceiro setor.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-
-
-    )
+    );
 }

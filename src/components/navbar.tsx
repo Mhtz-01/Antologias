@@ -13,19 +13,20 @@ export default function Navbar() {
         <nav className="top-0 left-0 w-full bg-pcr text-white shadow-md z-50">
             <div className="flex items-center justify-between px-6 py-3 md:px-8">
 
-                {/* Logo */}
-                <Link href="/" className="flex items-center">
+                {/* Logo e Nome */}
+                <Link href="/" className="flex items-center space-x-3">
                     <img
                         className="h-12 md:h-14 object-contain"
                         src="https://i.postimg.cc/sxsV4N4p/Horizontal-Branco-2021.png"
                         alt="Logo"
                     />
+                    <span className="text-xl md:text-2xl font-bold">Antologias</span>
                 </Link>
 
                 {/* Menu Desktop */}
                 <div className="hidden md:flex space-x-6 text-lg font-semibold justify-center items-center">
-                    <Link href="/" className="hover:text-gray-200 transition">
-                        Antologias
+                    <Link href="/editais" className="hover:text-gray-200 transition">
+                        Ver Editais
                     </Link>
 
                     <Link href="/contribuir">
@@ -54,8 +55,8 @@ export default function Navbar() {
             {/* Menu Mobile */}
             {isMobileMenuOpen && (
                 <div className="md:hidden flex flex-col items-center bg-pcr py-4 space-y-4 border-t border-gray-600">
-                    <Link href="/" className="hover:text-gray-200 transition">
-                        Antologias
+                    <Link href="/editais" className="hover:text-gray-200 transition">
+                        Ver Editais
                     </Link>
 
                     <Link href="/contribuir">

@@ -11,7 +11,7 @@ export default function Footer(){
                     />
                 </a>
                 <span>
-                    Esse site é uma iniciativa do projeto CIn-Bora Impactar em parceria com a Prefeitura de Recife.
+                    Esse site é feito por alunos por meio do projeto CIn-Bora Impactar em parceria com a Prefeitura de Recife.
                 </span>
             </footer>
         </>

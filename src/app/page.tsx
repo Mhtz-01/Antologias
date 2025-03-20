@@ -1,10 +1,11 @@
-import Link from "next/link";
+import ActionCard from "@/components/actioncard";
+import FeatureCard from "@/components/featurecard";
 
 export default function HomePage() {
     return (
         <div className="w-full">
             {/* Seção Principal */}
-            <section 
+            <section
                 className="relative h-screen flex flex-col justify-center items-center text-center text-white px-6"
                 style={{ backgroundImage: "url(/recife.webp)", backgroundSize: "cover", backgroundPosition: "center" }}
             >
@@ -14,24 +15,10 @@ export default function HomePage() {
                     <p className="text-lg md:text-xl">
                         Um repositório de oportunidades de fomento para <strong>organizações do terceiro setor</strong>.
                     </p>
-                    <div className="flex flex-col md:flex-row gap-6 mt-6">
-                        <div className="flex flex-col items-center gap-2">
-                            <p className="text-lg">Confira os editais disponíveis</p>
-                            <Link href="/editais">
-                                <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 transition-all text-white font-semibold rounded-lg">
-                                    Editais
-                                </button>
-                            </Link>
-                        </div>
+                    <div className="flex flex-col md:flex-row gap-6 mt-6 items-center">
+                        <ActionCard call="Confira os editais disponíveis!" action="Editais" />
                         <span className="text-lg">ou</span>
-                        <div className="flex flex-col items-center gap-2">
-                            <p className="text-lg">Contribua indicando novas oportunidades!</p>
-                            <Link href="/contribuir">
-                                <button className="px-6 py-3 bg-green-600 hover:bg-green-700 transition-all text-white font-semibold rounded-lg">
-                                    Contribuir
-                                </button>
-                            </Link>
-                        </div>
+                        <ActionCard call="Contribua indicando novas oportunidades!" action="Contribuir" />
                     </div>
                 </div>
             </section>
@@ -44,30 +31,18 @@ export default function HomePage() {
                         O Antologias oferece diversas funcionalidades para facilitar o acesso a oportunidades de fomento.
                     </p>
                     <div className="grid md:grid-cols-2 gap-8 mt-10">
-                        <div className="p-6 bg-white rounded-lg shadow-md">
-                            <h3 className="text-2xl font-semibold text-blue-600">🔍 Filtragem e Pesquisa</h3>
-                            <p className="text-gray-700 mt-2">
-                                Pesquise e filtre editais por categoria, região, valor do financiamento e mais.
-                            </p>
-                        </div>
-                        <div className="p-6 bg-white rounded-lg shadow-md">
-                            <h3 className="text-2xl font-semibold text-blue-600">💾 Salvar Editais</h3>
-                            <p className="text-gray-700 mt-2">
-                                Salve editais de interesse para acessá-los posteriormente de forma rápida.
-                            </p>
-                        </div>
-                        <div className="p-6 bg-white rounded-lg shadow-md">
-                            <h3 className="text-2xl font-semibold text-blue-600">📬 Notificações Personalizadas</h3>
-                            <p className="text-gray-700 mt-2">
-                                Receba notificações sobre novos editais alinhados ao seu perfil de atuação.
-                            </p>
-                        </div>
-                        <div className="p-6 bg-white rounded-lg shadow-md">
-                            <h3 className="text-2xl font-semibold text-blue-600">🤝 Comunidade</h3>
-                            <p className="text-gray-700 mt-2">
-                                Compartilhe oportunidades e colabore com outras organizações do terceiro setor.
-                            </p>
-                        </div>
+                        <FeatureCard
+                            feature="🔍 Filtragem e Pesquisa"
+                            description="Pesquise e filtre editais por categoria, região, valor do financiamento e mais." />
+                        <FeatureCard
+                            feature="💾 Salvar Editais"
+                            description=" Salve editais de interesse para acessá-los posteriormente de forma rápida." />
+                        <FeatureCard
+                            feature="📬 Notificações Personalizadas"
+                            description="Receba notificações sobre novos editais alinhados ao seu perfil de atuação." />
+                        <FeatureCard
+                            feature="🤝 Comunidade"
+                            description="Compartilhe oportunidades e colabore com outras organizações do terceiro setor." />
                     </div>
                 </div>
             </section>

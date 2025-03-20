@@ -21,7 +21,7 @@ export default function ContributePage() {
     setMessage("");
 
     try {
-      const res = await fetch("/api/contributions", {
+      const res = await fetch("/api/contribuir", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

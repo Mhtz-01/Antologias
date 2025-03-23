@@ -51,11 +51,11 @@ const EditalCard: React.FC<EditalProps> = ({
                         <p><strong>ODS:</strong> {sdgs.join(', ')}</p>
                         <p><strong>Causas:</strong> {causes.join(', ')}</p>
                         <p><strong>Habilidades:</strong> {skills.join(', ')}</p>
-                        <button
-                            className="mt-3 flex items-center text-blue-600 font-semibold hover:underline"
-                        >
-                            Ver mais detalhes <ArrowRight size={16} className="ml-1" />
-                        </button>
+                        <Link href={`/edital/${title}`}>
+                            <button className="mt-3 flex items-center text-blue-600 font-semibold hover:underline">
+                                Ver mais detalhes <ArrowRight size={16} className="ml-1" />
+                            </button>
+                        </Link>
                     </motion.div>
                 )}
             </AnimatePresence>

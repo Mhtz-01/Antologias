@@ -51,6 +51,7 @@ export default function EditaisList() {
                         {editais.map((edital) => (
                             <EditalCard
                                 key={edital.id}
+                                id={edital.id}
                                 title={edital.title}
                                 description={edital.description}
                                 funding_min={edital.funding_min}

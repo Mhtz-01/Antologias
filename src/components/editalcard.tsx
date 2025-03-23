@@ -4,8 +4,10 @@ import { ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import { SDG } from '@/domain/value-objects/SDGS';
 import { Cause } from '@/domain/value-objects/causes';
 import { Skill } from '@/domain/value-objects/skills';
+import Link from 'next/link';
 
 interface EditalProps {
+    id: number | null;
     title: string;
     description: string;
     icon: string;
@@ -18,7 +20,7 @@ interface EditalProps {
 }
 
 const EditalCard: React.FC<EditalProps> = ({
-    title, description, icon, sponsor, funding_min, funding_max, sdgs, causes, skills
+    id, title, description, icon, sponsor, funding_min, funding_max, sdgs, causes, skills
 }) => {
     const [expanded, setExpanded] = useState(false);
 
@@ -51,7 +53,7 @@ const EditalCard: React.FC<EditalProps> = ({
                         <p><strong>ODS:</strong> {sdgs.join(', ')}</p>
                         <p><strong>Causas:</strong> {causes.join(', ')}</p>
                         <p><strong>Habilidades:</strong> {skills.join(', ')}</p>
-                        <Link href={`/edital/${title}`}>
+                        <Link href={`/editais/${id}`}>
                             <button className="mt-3 flex items-center text-blue-600 font-semibold hover:underline">
                                 Ver mais detalhes <ArrowRight size={16} className="ml-1" />
                             </button>

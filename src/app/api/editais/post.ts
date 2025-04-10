@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import createEditalService from "../../../domain/services/createEditalService";
+import editalService from "@/domain/services/editalService";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json(); 
-    const { title, icon, description, funding_min, funding_max, sponsor, sdgs, causes, skills } = body;
+    const { title, icon, description, funding_min, funding_max, sponsor, sdgs, causes, skills, edital_url, start_of_submission, end_of_submission } = body;
 
-    const edital = createEditalService.create({ title, icon, description, funding_min, funding_max, sponsor, sdgs, causes, skills });
+    const edital = editalService.create({ title, icon, description, funding_min, funding_max, sponsor, sdgs, causes, skills, edital_url, start_of_submission, end_of_submission });
 
     return NextResponse.json({ message: "Edital criado", edital }, { status: 201 });
   } catch (error: any) {

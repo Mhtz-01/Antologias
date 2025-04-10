@@ -6,8 +6,7 @@ import FilterField from "./filterfield";
 
 interface SelectedFilters {
     area: string[];
-    ods: string[];
-    region: string[];   
+    ods: string[];   
     skills: string[];
 }
 
@@ -15,13 +14,11 @@ export default function FilterSection() {
     const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
         area: [],
         ods: [],
-        region: [],
         skills: []
     });
 
     const area = ["Sustentabilidade", "Artes e Cultura", "Educação", "Tecnologia", "Diversidade"];
     const ods = ["ODS1", "ODS2", "ODS3", "ODS4", "ODS5"]
-    const region = ["Municipal", "Estadual", "Federal", "Internacional"];
     const skills = ["Artes", "Dança", "Artesanato", "Tecnologia", "Saúde", "Cozinha"]
 
     // Enviar filtros ao backend
@@ -49,8 +46,7 @@ export default function FilterSection() {
             <FilterField label="Causas de interesse" options={area} selectedFilters={selectedFilters.area} setSelectedFilters={(filters) => setSelectedFilters(prev => ({ ...prev, area: filters }))} />
             <FilterField label="ODS" options={ods} selectedFilters={selectedFilters.ods} setSelectedFilters={(filters) => setSelectedFilters(prev => ({ ...prev, ods: filters }))} />
             <FilterField label="Habilidades requisitadas" options={skills} selectedFilters={selectedFilters.skills} setSelectedFilters={(filters) => setSelectedFilters(prev => ({ ...prev, skills: filters }))} />
-            <FilterField label="Região" options={region} selectedFilters={selectedFilters.region} setSelectedFilters={(filters) => setSelectedFilters(prev => ({ ...prev, region: filters }))} />
-
+           
             <FilterButton onClick={applyFilters} />
         </div>
     );

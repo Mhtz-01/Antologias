@@ -15,11 +15,6 @@ export default function Navbar() {
 
                 {/* Logo e Nome */}
                 <Link href="/" className="flex items-center space-x-3">
-                    <img
-                        className="h-12 md:h-14 object-contain"
-                        src="https://i.postimg.cc/sxsV4N4p/Horizontal-Branco-2021.png"
-                        alt="Logo"
-                    />
                     <span className="text-xl md:text-2xl font-bold">Antologias</span>
                 </Link>
 

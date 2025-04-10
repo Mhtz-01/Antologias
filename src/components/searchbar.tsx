@@ -6,7 +6,7 @@ export function SearchBar() {
             <div className="w-full flex flex-row items-center justify-center py-6 bg-white shadow-md gap-4 p-4">
                 <img
                     className="w-20 md:w-28 object-contain"
-                    src="https://i.postimg.cc/VkrcnwPx/bora-impactar.png"
+                    src="cinboraimpactarlogo.png"
                     alt="Bora Impactar" /><form
                         className="flex bg-slate-200 items-center rounded-xl h-14 px-4 gap-3 w-full max-w-lg text-slate-600"
                         onSubmit={(e) => e.preventDefault()}

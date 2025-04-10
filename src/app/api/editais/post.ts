@@ -4,9 +4,9 @@ import editalService from "@/domain/services/editalService";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json(); 
-    const { title, icon, description, funding_min, funding_max, sponsor, sdgs, causes, skills, edital_url, start_of_submission, end_of_submission } = body;
+    const { title, icon, description, funding_min, funding_max, sponsor, sdgs, causes, skills, edital_url, deadline } = body;
 
-    const edital = editalService.create({ title, icon, description, funding_min, funding_max, sponsor, sdgs, causes, skills, edital_url, start_of_submission, end_of_submission });
+    const edital = editalService.create({ title, icon, description, funding_min, funding_max, sponsor, sdgs, causes, skills, edital_url, deadline });
 
     return NextResponse.json({ message: "Edital criado", edital }, { status: 201 });
   } catch (error: any) {

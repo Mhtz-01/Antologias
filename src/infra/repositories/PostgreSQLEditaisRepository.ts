@@ -2,6 +2,34 @@ import { QueryResult } from "pg";
 import pool from "../database";
 import Edital from "@/domain/entities/edital";
 import IEditaisRepository from "@/domain/entities/IEditaisRepository";
+import Deadline from "@/domain/value-objects/deadline";
+import { SDG } from "@/domain/value-objects/SDGS";
+import { Cause } from "@/domain/value-objects/causes";
+import { Skill } from "@/domain/value-objects/skills";
+
+type RawEditalRow = {
+    id: number;
+    title: string;
+    icon: string;
+    description: string;
+    funding_min: number;
+    funding_max: number;
+    edital_url: string;
+    initial_time: string; 
+    end_time: string;     
+    sponsor: {
+      id: number;
+      name: string;
+      icon_url: string;
+      description: string;
+      website: string;
+      contactEmail: string;
+      phone: string;
+    };
+    sdgs: SDG[];
+    causes: Cause[];
+    skills: Skill[];
+  };
 
 class PostgresEditaisRepository implements IEditaisRepository {
     async save(edital: Edital): Promise<Edital> {
@@ -32,9 +60,9 @@ class PostgresEditaisRepository implements IEditaisRepository {
 
             const query = `
                 INSERT INTO editais (
-                    title, iconurl, description, funding_min, funding_max, sponsor_id, initial_date_time, end_date_time
+                    title, iconurl, description, funding_min, funding_max, sponsor_id, initial_date_time, end_date_time, edital_url
                 )
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
                 RETURNING *;
             `;
             const values = [
@@ -45,15 +73,12 @@ class PostgresEditaisRepository implements IEditaisRepository {
                 edital.funding_max,
                 sponsor_id,
                 edital.deadline.initial_time,
-                edital.deadline.end_time
+                edital.deadline.end_time,
+                edital.edital_url
             ];
 
-            const result: QueryResult<Edital> = await client.query(query, values);
+            const result = await client.query(query, values);
             const createdEdital = result.rows[0];
-
-            if (!createdEdital.id) {
-                throw new Error("Failed to retrieve the generated ID for the edital.");
-            }
 
             await Promise.all([
                 this.insertRelations(client, "edital_sdgs", "sdg", createdEdital.id, edital.sdgs.map(s => s.id)),
@@ -62,7 +87,21 @@ class PostgresEditaisRepository implements IEditaisRepository {
             ]);
 
             await client.query("COMMIT");
-            return createdEdital;
+
+            return new Edital(
+                createdEdital.id,
+                createdEdital.title,
+                createdEdital.iconurl,
+                createdEdital.description,
+                createdEdital.funding_min,
+                createdEdital.funding_max,
+                edital.sponsor,
+                edital.sdgs,
+                edital.causes,
+                edital.skills,
+                createdEdital.edital_url,
+                new Deadline(createdEdital.initial_date_time, createdEdital.end_date_time)
+            );
         } catch (error) {
             await client.query("ROLLBACK");
             throw new Error("Erro ao salvar edital: " + error);
@@ -84,9 +123,9 @@ class PostgresEditaisRepository implements IEditaisRepository {
     async findAll(): Promise<Edital[]> {
         const query = `
             SELECT 
-                e.id, e.title, e.iconurl, e.description, e.funding_min, e.funding_max,
-                e.initial_date_time AS start_of_submission,
-                e.end_date_time AS end_of_submission,
+                e.id, e.title, e.iconurl AS icon, e.description, e.funding_min, e.funding_max, e.edital_url,
+                e.initial_date_time AS initial_time,
+                e.end_date_time AS end_time,
                 json_build_object(
                     'id', s.id,
                     'name', s.name,
@@ -102,23 +141,30 @@ class PostgresEditaisRepository implements IEditaisRepository {
             FROM editais e
             JOIN sponsors s ON e.sponsor_id = s.id;
         `;
-        const result: QueryResult<Edital> = await pool.query(query);
+        const result: QueryResult<RawEditalRow> = await pool.query(query);
 
-        return result.rows.map(row => new Edital({
-            ...row,
-            deadline: {
-                initial_time: row.,
-                end_time: row.end_date_time
-            }
-        }));
+        return result.rows.map(row => new Edital(
+            row.id,
+            row.title,
+            row.icon,
+            row.description,
+            row.funding_min,
+            row.funding_max,
+            row.sponsor,
+            row.sdgs,
+            row.causes,
+            row.skills,
+            row.edital_url,
+            new Deadline(new Date(row.initial_time), new Date(row.end_time))
+        ));
     }
 
     async findByID(id: number): Promise<Edital> {
         const query = `
             SELECT 
-                e.id, e.title, e.iconurl, e.description, e.funding_min, e.funding_max,
-                e.initial_date_time AS start_of_submission,
-                e.end_date_time AS end_of_submission,
+                e.id, e.title, e.iconurl AS icon, e.description, e.funding_min, e.funding_max, e.edital_url,
+                e.initial_date_time AS initial_time,
+                e.end_date_time AS end_time,
                 json_build_object(
                     'id', s.id,
                     'name', s.name,
@@ -135,7 +181,7 @@ class PostgresEditaisRepository implements IEditaisRepository {
             JOIN sponsors s ON e.sponsor_id = s.id
             WHERE e.id = $1;
         `;
-        const result: QueryResult<Edital> = await pool.query(query, [id]);
+        const result: QueryResult<RawEditalRow> = await pool.query(query, [id]);
 
         if (result.rows.length === 0) {
             throw new Error("Não existe um edital com esse ID!");
@@ -154,7 +200,7 @@ class PostgresEditaisRepository implements IEditaisRepository {
             row.causes,
             row.skills,
             row.edital_url,
-            row.deadline
+            new Deadline(new Date(row.initial_time), new Date(row.end_time))
         );
     }
 
@@ -188,8 +234,8 @@ class PostgresEditaisRepository implements IEditaisRepository {
                 UPDATE editais SET 
                     title = $1, iconurl = $2, description = $3, 
                     funding_min = $4, funding_max = $5, sponsor_id = $6,
-                    initial_date_time = $7, end_date_time = $8
-                WHERE id = $9 RETURNING *;
+                    initial_date_time = $7, end_date_time = $8, edital_url = $9
+                WHERE id = $10 RETURNING *;
             `;
             const updateValues = [
                 edital.title,
@@ -200,9 +246,11 @@ class PostgresEditaisRepository implements IEditaisRepository {
                 sponsor_id,
                 edital.deadline.initial_time,
                 edital.deadline.end_time,
+                edital.edital_url,
                 id
             ];
-            const result: QueryResult<Edital> = await client.query(updateQuery, updateValues);
+            const result = await client.query(updateQuery, updateValues);
+            const updated = result.rows[0];
 
             await client.query("DELETE FROM edital_sdgs WHERE edital_id = $1", [id]);
             await client.query("DELETE FROM edital_causes WHERE edital_id = $1", [id]);
@@ -213,7 +261,21 @@ class PostgresEditaisRepository implements IEditaisRepository {
             await this.insertRelations(client, "edital_skills", "skill", id, edital.skills.map(s => s.id));
 
             await client.query("COMMIT");
-            return result.rows[0];
+
+            return new Edital(
+                updated.id,
+                updated.title,
+                updated.iconurl,
+                updated.description,
+                updated.funding_min,
+                updated.funding_max,
+                edital.sponsor,
+                edital.sdgs,
+                edital.causes,
+                edital.skills,
+                updated.edital_url,
+                new Deadline(updated.initial_date_time, updated.end_date_time)
+            );
         } catch (error) {
             await client.query("ROLLBACK");
             throw new Error("Erro ao atualizar edital: " + error);

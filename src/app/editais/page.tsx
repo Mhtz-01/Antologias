@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import EditalCard from "@/components/editalcard";
 import { SearchBar } from "@/components/searchbar";
 import FilterSection from "@/components/filter/editaisfilter";
+import Deadline from "@/domain/value-objects/deadline";
 
 export default function EditaisList() {
     const [editais, setEditais] = useState<Edital[]>([]);
@@ -18,17 +19,18 @@ export default function EditaisList() {
     
             const transformedData = data.map((edital: any) => ({
                 ...edital,
-                icon: edital.icon, 
+                deadline: new Deadline(new Date(edital.deadline.initial_time), new Date(edital.deadline.end_time))
             }));
     
             setEditais(transformedData);
+              
         } catch (error) {
             console.error("Error fetching editais:", error);
         }
     };
 
     useEffect(() => {
-        fetchEditais();
+        fetchEditais(); 
     }, []);
 
     return (
@@ -53,8 +55,7 @@ export default function EditaisList() {
                                 causes={edital.causes}
                                 icon={edital.icon}
                                 sponsor={edital.sponsor.name}
-                                end_of_submission={edital.end_of_submission}
-                                start_of_submission={edital.start_of_submission}
+                                deadline={edital.deadline}
                             />
                         ))}
                     </div>

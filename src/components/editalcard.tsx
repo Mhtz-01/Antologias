@@ -4,6 +4,7 @@ import { SDG } from '@/domain/value-objects/SDGS';
 import { Cause } from '@/domain/value-objects/causes';
 import { Skill } from '@/domain/value-objects/skills';
 import Link from 'next/link';
+import Deadline from '@/domain/value-objects/deadline';
 
 interface EditalProps {
     id: number | null;
@@ -16,13 +17,12 @@ interface EditalProps {
     sdgs: SDG[];
     causes: Cause[];
     skills: Skill[];
-    start_of_submission: string;
-    end_of_submission: string;
+    deadline: Deadline;
 }
 
 const EditalCard: React.FC<EditalProps> = ({
     id, title, description, icon, sponsor, funding_min, funding_max,
-    sdgs, causes, skills, start_of_submission, end_of_submission
+    sdgs, causes, skills, deadline
 }) => {
     const [expanded, setExpanded] = useState(false);
 
@@ -42,8 +42,7 @@ const EditalCard: React.FC<EditalProps> = ({
                 </div>
 
                 <div className="text-sm text-right text-slate-600">
-                    <p><strong>Início:</strong> {new Date(start_of_submission).toLocaleDateString()}</p>
-                    <p><strong>Término:</strong> {new Date(end_of_submission).toLocaleDateString()}</p>
+                    <p>{deadline.formatEditalDeadline()}</p>
                     {expanded ? <ChevronUp size={20} className="ml-auto mt-2" /> : <ChevronDown size={20} className="ml-auto mt-2" />}
                 </div>
             </div>

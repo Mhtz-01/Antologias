@@ -17,8 +17,7 @@ interface CreateEditalParams {
   causes: Cause[];
   skills: Skill[];
   edital_url: string;
-  start_of_submission: string;
-  end_of_submission: string;
+  deadline: Deadline;
 }
 
 export default class EditalService {
@@ -33,13 +32,8 @@ export default class EditalService {
     causes,
     skills,
     edital_url,
-    start_of_submission,
-    end_of_submission,
+    deadline
   }: CreateEditalParams): Promise<Edital> {
-    const deadline = new Deadline(
-      new Date(start_of_submission),
-      new Date(end_of_submission)
-    );
 
     const edital = new Edital(
       null,

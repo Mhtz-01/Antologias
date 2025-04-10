@@ -4,7 +4,6 @@ import FeatureCard from "@/components/featurecard";
 export default function HomePage() {
     return (
         <div className="w-full">
-            {/* Seção Principal */}
             <section
                 className="relative h-screen flex flex-col justify-center items-center text-center text-white px-6"
                 style={{ backgroundImage: "url(/recife.webp)", backgroundSize: "cover", backgroundPosition: "center" }}
@@ -23,7 +22,6 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* Seção de Funcionalidades */}
             <section className="h-auto py-20 px-6 bg-gray-100">
                 <div className="max-w-4xl mx-auto text-center">
                     <h2 className="text-4xl font-bold text-gray-800">Funcionalidades</h2>

@@ -60,7 +60,7 @@ class PostgresEditaisRepository implements IEditaisRepository {
 
             const query = `
                 INSERT INTO editais (
-                    title, iconurl, description, funding_min, funding_max, sponsor_id, initial_date_time, end_date_time, edital_url
+                    title, iconurl, description, funding_min, funding_max, sponsor_id, edital_url, initial_date_time, end_date_time 
                 )
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
                 RETURNING *;
@@ -72,9 +72,9 @@ class PostgresEditaisRepository implements IEditaisRepository {
                 edital.funding_min,
                 edital.funding_max,
                 sponsor_id,
+                edital.edital_url,
                 edital.deadline.initial_time,
                 edital.deadline.end_time,
-                edital.edital_url
             ];
 
             const result = await client.query(query, values);

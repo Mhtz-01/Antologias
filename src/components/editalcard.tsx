@@ -5,6 +5,7 @@ import { Cause } from '@/domain/value-objects/causes';
 import { Skill } from '@/domain/value-objects/skills';
 import Link from 'next/link';
 import Deadline from '@/domain/value-objects/deadline';
+import { ODS } from '@/domain/value-objects/enumSDGS';
 
 interface EditalProps {
     id: number | null;
@@ -31,7 +32,7 @@ const EditalCard: React.FC<EditalProps> = ({
             className="bg-white rounded-xl shadow-md text-slate-800 p-4 w-11/12 cursor-pointer gap-4 transition-transform duration-200 hover:scale-105"
             onClick={() => setExpanded(!expanded)}
         >
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-start">
                 <div className="flex flex-row gap-4 items-start">
                     <img alt={title} src={icon} className='object-contain size-20' />
                     <div className='flex flex-col'>
@@ -41,9 +42,17 @@ const EditalCard: React.FC<EditalProps> = ({
                     </div>
                 </div>
 
-                <div className="text-sm text-right text-slate-600">
+                <div className="flex flex-col items-end text-sm text-slate-600">
                     <p>{deadline.formatEditalDeadline()}</p>
-                    {expanded ? <ChevronUp size={20} className="ml-auto mt-2" /> : <ChevronDown size={20} className="ml-auto mt-2" />}
+                    <Link
+                        href={`/editais/${id}`}
+                        className="mt-2 inline-flex items-center text-blue-600 font-semibold hover:underline"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        Ver mais detalhes
+                        <ArrowRight size={16} className="mr-1" />
+                    </Link>
+                    {expanded ? <ChevronUp size={20} className="mt-2" /> : <ChevronDown size={20} className="mt-2" />}
                 </div>
             </div>
 
@@ -56,7 +65,7 @@ const EditalCard: React.FC<EditalProps> = ({
                         <div className="flex flex-wrap gap-2 mt-1">
                             {sdgs.map((sdg, i) => (
                                 <span key={i} className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
-                                    {sdg.name || sdg.id}
+                                    {ODS["ODS_"+sdg.id]}
                                 </span>
                             ))}
                         </div>
@@ -84,11 +93,6 @@ const EditalCard: React.FC<EditalProps> = ({
                         </div>
                     </div>
 
-                    <Link href={`/editais/${id}`}>
-                        <button className="mt-3 flex items-center text-blue-600 font-semibold hover:underline">
-                            Ver mais detalhes <ArrowRight size={16} className="ml-1" />
-                        </button>
-                    </Link>
                 </div>
             )}
         </div>

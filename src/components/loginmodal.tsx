@@ -1,5 +1,9 @@
+import { useAuth } from "@/domain/context/authContext";
+import NGO from "@/domain/entities/ngo";
+import User from "@/domain/entities/user";
 import { X } from "lucide-react";
 import { useState } from "react";
+
 
 interface LoginModalProps {
     onClose: () => void;
@@ -9,6 +13,7 @@ export default function LoginModal({ onClose }: LoginModalProps) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const { login } = useAuth();
 
     const handleSubmit = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
@@ -26,10 +31,28 @@ export default function LoginModal({ onClose }: LoginModalProps) {
             }
 
             const data = await response.json();
-            localStorage.setItem('user', JSON.stringify(data.user));
-            localStorage.setItem('ngo', JSON.stringify(data.ngo));
-            console.log(data);
-            onClose();
+            
+            const ngo = new NGO(
+                data.ngo.id,
+                data.ngo.name,
+                data.ngo.description,
+                data.ngo.is_formalized,
+                data.ngo.start_year,
+                data.ngo.contact_phone,
+                data.ngo.instagram_link,
+                data.ngo.x_link,
+                data.ngo.facebook_link,
+                data.ngo.pix_qr_code_link,
+                data.ngo.gallery_images_url,
+                data.ngo.skills,
+                data.ngo.causes,
+                data.ngo.sdgs
+              );
+            
+              const user = new User(data.user.name, data.user.email, ngo);
+            
+              login(user);
+              onClose();  
         } catch (error) {
             setError("Credenciais inválidas. Tente novamente.");
         }

@@ -204,7 +204,7 @@ class PostgresEditaisRepository implements IEditaisRepository {
         );
     }
 
-    async updateByID(id: number, edital: Edital): Promise<Edital> {
+    async update(id: number, edital: Edital): Promise<Edital> {
         const client = await pool.connect();
         try {
             await client.query("BEGIN");

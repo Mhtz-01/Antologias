@@ -48,7 +48,7 @@ describe("EditalService.create", () => {
     const fakeRepository = {
       save: jest.fn().mockResolvedValue({
         ...newEdital,
-        id: 2, 
+        id: 2,
       }),
     };
 
@@ -65,8 +65,7 @@ describe("EditalService.create", () => {
       causes,
       skills,
       edital_url: "https://link-do-novo-edital.com",
-      start_of_submission: start.toISOString(),
-      end_of_submission: end.toISOString(),
+      deadline,
     });
 
     expect(fakeRepository.save).toHaveBeenCalledWith(expect.any(Edital));

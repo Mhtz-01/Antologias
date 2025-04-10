@@ -20,6 +20,10 @@ interface CreateEditalParams {
   deadline: Deadline;
 }
 
+interface UpdateEditalParams extends CreateEditalParams {
+  id: number;
+}
+
 export default class EditalService {
   static async create({
     title,
@@ -55,5 +59,45 @@ export default class EditalService {
 
   static async getEditais(): Promise<Edital[]> {
     return await RepositoryFactory.getEditalRepository().findAll();
+  }
+
+  static async getById(id: number): Promise<Edital> {
+    return await RepositoryFactory.getEditalRepository().findByID(id);
+  }
+
+  static async update({
+    id,
+    title,
+    icon,
+    description,
+    funding_min,
+    funding_max,
+    sponsor,
+    sdgs,
+    causes,
+    skills,
+    edital_url,
+    deadline
+  }: UpdateEditalParams): Promise<Edital> {
+    const edital = new Edital(
+      id,
+      title,
+      icon,
+      description,
+      funding_min,
+      funding_max,
+      sponsor,
+      sdgs,
+      causes,
+      skills,
+      edital_url,
+      deadline
+    );
+
+    return await RepositoryFactory.getEditalRepository().update(id, edital);
+  }
+
+  static async delete(id: number): Promise<void> {
+    await RepositoryFactory.getEditalRepository().delete(id);
   }
 }

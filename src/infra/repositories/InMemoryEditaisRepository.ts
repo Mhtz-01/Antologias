@@ -2,15 +2,15 @@ import Edital from "@/domain/entities/edital";
 import IEditaisRepository from "@/domain/entities/IEditaisRepository";
 
 class InMemoryEditaisRepository implements IEditaisRepository {
-    private editais: Edital[] = []
-    private lastId = 0
+    private editais: Edital[] = [];
+    private lastId = 0;
 
     async save(edital: Edital): Promise<Edital> {
         if (!edital.id) {
-            edital.id = ++this.lastId
-            this.editais.push(edital)
+            edital.id = ++this.lastId;
+            this.editais.push(edital);
         } else {
-            throw new Error("Esse edital já existe!")
+            throw new Error("Esse edital já existe!");
         }
         return Promise.resolve(edital);
     }
@@ -32,11 +32,15 @@ class InMemoryEditaisRepository implements IEditaisRepository {
         const index = this.editais.findIndex((t) => t.id === id);
 
         if (index !== -1) {
-            this.editais[index] = { ...updatedEdital, id }; 
+            this.editais[index] = { ...updatedEdital, id };
             return Promise.resolve(this.editais[index]);
         } else {
             throw new Error("Erro ao atualizar edital!");
         }
+    }
+
+    async update(id: number, updatedEdital: Edital): Promise<Edital> {
+        return this.updateByID(id, updatedEdital);
     }
 
     async delete(id: number): Promise<boolean> {

@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import RepositoryFactory from "../../../../domain/factories/RepositoryFactory";
 
-export async function GET(req: NextRequest, context: { params: { id: string } }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
-    const { id } = context.params;
+    const { id } = params;
     const edital = await RepositoryFactory.getEditalRepository().findByID(Number(id));
 
     if (!edital) {

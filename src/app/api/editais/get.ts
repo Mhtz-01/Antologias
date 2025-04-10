@@ -1,9 +1,9 @@
+import editalService from "@/domain/services/editalService";
 import { NextRequest, NextResponse } from "next/server";
-import RepositoryFactory from "@/domain/factories/RepositoryFactory";
 
 export async function GET(req: NextRequest) {
   try {
-    const editais = await RepositoryFactory.getEditalRepository().findAll();
+    const editais = await editalService.getEditais();
 
     return NextResponse.json(editais, { status: 200 });
   } catch (error: any) {

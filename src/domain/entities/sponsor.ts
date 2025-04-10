@@ -1,26 +1,26 @@
 export class Sponsor {
     id: number;
     name: string;
-    iconUrl: string;
+    icon_url: string;
     description: string;
-    site: string;
+    website: string;
     contactEmail: string;
     phone?: string;
 
     constructor(
         id: number,
         name: string,
-        iconUrl: string,
+        icon_url: string,
         description: string,
-        site: string,
+        website: string,
         contactEmail: string,
         phone?: string
     ) {
         this.id = id;
         this.name = name;
-        this.iconUrl = iconUrl;
+        this.icon_url = icon_url;
         this.description = description;
-        this.site = site;
+        this.website = website;
         this.contactEmail = contactEmail;
         this.phone = phone;
     }
